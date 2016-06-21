@@ -2,6 +2,11 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
 
 <suite name="AllTests" verbose="0">
+	<parameter name="driver" value="htmlunit"/>
+	<parameter name="driverPath" value="C:\Users\Kamil\Dropbox\webdrivers\chromedriver.exe"/>
+	<!--  <parameter name="os" value="windows"/> -->
+	<!--  <parameter name="implicitWait" value="10"/> -->
+	
 	<test name="test_all">
 		<packages>
 			<package name="tests"></package>

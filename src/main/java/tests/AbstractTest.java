@@ -1,6 +1,6 @@
 package tests;
 
-import java.util.Random;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -15,16 +15,61 @@ import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
 
+import utils.Screenshot;
+
 public class AbstractTest {
-	protected static final Logger LOGGER = Logger.getLogger("");
-	protected WebDriver driver;
+	protected static final Logger LOGGER = Logger.getLogger(AbstractTest.class.getName());
+	protected static WebDriver driver;
+	protected static int currentImplicitWait;
+	protected static int lastImplicitWait;
+	
+	private static String driverName;
+	private static String driverPath;
+	private static String osName;
 
 	@BeforeSuite
-	@Parameters({"driver", "driverPath","os"})
-	public void setUpSuite(@Optional("firefox") String driverName, @Optional("") String driverPath, @Optional("windows") String osName) {
-		LOGGER.setLevel(Level.ALL);
-		LOGGER.info("Setting up webdriver as" + driverName);
+	@Parameters({"driver", "driverPath","os","implicitWait"})
+	public void setUpSuite(	@Optional("firefox") String driverNameParam,
+							@Optional("") String driverPathParam, 
+							@Optional("windows") String osNameParam, 
+							@Optional("10") int implicitWaitParam) {
+		LOGGER.setLevel(Level.INFO);
+		LOGGER.info("Setting webdriver to " + driverNameParam);
+		LOGGER.info("Setting driver path to " + driverPathParam);
+		LOGGER.info("Setting os name to " + osNameParam);
+		LOGGER.info("Setting implicit wait time to " + implicitWaitParam + " seconds");
 		
+		driverName = driverNameParam;
+		driverPath = driverPathParam;
+		osName = osNameParam;
+		currentImplicitWait = implicitWaitParam;	
+		
+		Screenshot.getInstance().clearScrrenshotFolder();
+	}	
+	
+	public void initWebDriver(){
+		setWebDriver(driverName, driverPath, osName);
+		setImplicitWait(currentImplicitWait);
+	}
+	
+	public void setImplicitWait(int seconds){
+		currentImplicitWait = seconds;
+		driver.manage().timeouts().implicitlyWait(seconds, TimeUnit.SECONDS);
+		LOGGER.log(Level.INFO, "Implicit wait changed to " + seconds + " seconds.");
+	}
+	
+	public void changeImplicitWait(int seconds){
+		lastImplicitWait = currentImplicitWait;
+		setImplicitWait(seconds);
+		LOGGER.log(Level.INFO, "Implicit wait changed to " + seconds + " seconds.");
+	}
+	
+	public void restoreImplicitWait(){
+		setImplicitWait(lastImplicitWait);
+		LOGGER.log(Level.INFO, "Implicit wait restored to " + lastImplicitWait + " seconds.");
+	}
+
+	public void setWebDriver(String driverName, String driverPath, String osName){
 		switch (driverName.toLowerCase()) {
 		case "firefox": {
 			driver = new FirefoxDriver();
@@ -33,7 +78,7 @@ public class AbstractTest {
 			System.setProperty("webdriver.chrome.driver", driverPath);
 			driver = new ChromeDriver();
 		};break;
-		case "ie": {
+		case "internetexplorer": {
 			System.setProperty("webdriver.ie.driver", driverPath);
 			driver = new InternetExplorerDriver();
 		};break;
@@ -50,5 +95,5 @@ public class AbstractTest {
 			driver = new HtmlUnitDriver();
 		};break;
 		}
-	}	
+	}
 }

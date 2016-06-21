@@ -13,6 +13,7 @@ import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriverException;
 
 public class Screenshot {
 	private static volatile Screenshot instance = null;
@@ -46,13 +47,20 @@ public class Screenshot {
 		
 		try {
 			FileUtils.cleanDirectory(scrrenshotDirectory);
-		} catch (IOException e) {
-			LOGGER.log(Level.WARNING, "Failed to clean scrrenshots directory", e);
+		} catch (IOException ex) {
+			LOGGER.log(Level.WARNING, "Failed to clean scrrenshots directory", ex);
 		}
 	}
 	
 	public void takeScreenshot(WebDriver driver, String screenshotName){
-		File scrFile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);        		
+		File scrFile = null;
+		try{
+			scrFile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+		}catch(WebDriverException | ClassCastException ex){
+			LOGGER.log(Level.WARNING, "Taking screenshot failed. Check if selected webdriver supports screenshots.", ex);
+			return;
+		}
+		        		
 		
 		new File(testOutputFolder).mkdir();
 		File scrrenshotDirectory = new File(testOutputFolder + "/" + screenshotFolder + "/");
@@ -70,8 +78,9 @@ public class Screenshot {
 	        while ((length = is.read(buffer)) > 0) {
 	            os.write(buffer, 0, length);
 	        }
+	        LOGGER.log(Level.INFO, "Saved screenshot " + screenshotName + ".png");
 	    }catch(Exception ex){
-	    	LOGGER.log(Level.WARNING, "Failed to save screenshot", ex);
+	    	LOGGER.log(Level.WARNING, "Failed to save screenshot "  + screenshotName + ".png", ex);
 	    }
 	    finally {
 	    	try{
