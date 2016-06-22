@@ -16,12 +16,12 @@ public class MainPage extends AbstractPage{
 	@FindBy(partialLinkText="Dodaj klienta")
 	private WebElement addClientLink;
 
-	@FindBy(partialLinkText="Wyloguj siÄ™")
+	@FindBy(partialLinkText="Wyloguj siê™")
 	private WebElement logoutLink;
 	
-	private static By addUserLinkLocator = By.partialLinkText("Dodaj uÅ¼ytkownika");
+	private static By addUserLinkLocator = By.partialLinkText("Dodaj u¿ytkownika");
 	
-	private static By usersLinkLocator = By.partialLinkText("UÅ¼ytkownicy");
+	private static By usersLinkLocator = By.partialLinkText("U¿ytkownicy");
 	
 	public MainPage(WebDriver driver){
 		super(driver);
@@ -36,11 +36,11 @@ public class MainPage extends AbstractPage{
 	}
 	
 	public boolean loggedInAsAdmin(){
-		return this.areElementsPresent(addUserLinkLocator, usersLinkLocator);
+		return this.hasElementsPresent(addUserLinkLocator, usersLinkLocator);
 	}
 	
 	public boolean loggedInAsOperator(){
-		return !this.areElementsPresent(addUserLinkLocator, usersLinkLocator);
+		return !this.hasElementsPresent(addUserLinkLocator, usersLinkLocator);
 	}	
 	
 	public AddUserPage openAddUserPage(){

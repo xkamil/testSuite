@@ -39,7 +39,7 @@ public class UserTests extends AbstractTest{
 		usersPage.setUserFilter(UsersPage.FILTER_AGENT);
 		assertTrue(usersPage.checkIfAllUsersContainsText(UsersPage.FILTER_AGENT));
 	}
-	/*
+	
 	@Test
 	public void test_username_auto_fill_for_agent(){
 		AddUserPage addUserPage = new LoginPage(driver).logInAsAdmin().openAddUserPage();
@@ -147,7 +147,7 @@ public class UserTests extends AbstractTest{
 			fail("Added user not found!");
 		}				
 	}	
-*/
+
 	@BeforeMethod
 	public  void setUpTestMethod(){
 		initWebDriver();

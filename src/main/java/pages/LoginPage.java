@@ -39,7 +39,7 @@ public class LoginPage extends AbstractPage{
 	}
 	
 	public boolean isLoginFailedAlertPresent(){
-		return this.areElementsPresent(loginAlert);
+		return this.hasElementsPresent(loginAlert);
 	}
 	
 	public MainPage logInAsAdmin(){

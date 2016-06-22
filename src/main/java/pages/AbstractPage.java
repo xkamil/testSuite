@@ -12,7 +12,7 @@ public abstract class AbstractPage {
 		this.driver = driver;
 	}
 	
-	public boolean areElementsPresent(By... elements){
+	public boolean hasElementsPresent(By... elements){
 		for(By element : elements){
 			try{
 				WebElement webElement = driver.findElement(element);
@@ -24,5 +24,23 @@ public abstract class AbstractPage {
 			}			
 		}
 		return true;
+	}
+
+	public boolean isWebElementContainsText(WebElement element, String...textParams){
+		String webElementText = element.getText();
+		return isStringContainsText(webElementText, textParams);		
+	}
+	
+	public boolean isStringContainsText(String text, String...textParams){
+		boolean found = false;
+		for(String textParam : textParams){
+			if(text.contains(textParam)){
+				found = true;
+			}else{
+				found = false;
+				break;
+			}
+		}
+		return found;		
 	}
 }
