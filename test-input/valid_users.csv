@@ -1,4 +1,3 @@
 login;password
-admin;null
-operator;optest
-krzysiek;dupa99
+admin@example.com;test
+operator@example.com;test

@@ -22,17 +22,19 @@ public class AbstractTest {
 	protected static WebDriver driver;
 	protected static int currentImplicitWait;
 	protected static int lastImplicitWait;
+	protected static String baseUrl;
 	
 	private static String driverName;
 	private static String driverPath;
 	private static String osName;
 
 	@BeforeSuite
-	@Parameters({"driver", "driverPath","os","implicitWait"})
+	@Parameters({"driver", "driverPath","os","implicitWait","baseUrl"})
 	public void setUpSuite(	@Optional("firefox") String driverNameParam,
 							@Optional("") String driverPathParam, 
 							@Optional("windows") String osNameParam, 
-							@Optional("10") int implicitWaitParam) {
+							@Optional("10") int implicitWaitParam,
+							@Optional("") String baseUrlParam) {
 		LOGGER.setLevel(Level.INFO);
 		LOGGER.info("Setting webdriver to " + driverNameParam);
 		LOGGER.info("Setting driver path to " + driverPathParam);
@@ -43,6 +45,7 @@ public class AbstractTest {
 		driverPath = driverPathParam;
 		osName = osNameParam;
 		currentImplicitWait = implicitWaitParam;	
+		baseUrl = baseUrlParam;
 		
 		Screenshot.getInstance().clearScrrenshotFolder();
 	}	
