@@ -43,4 +43,13 @@ public class MainPage extends AbstractPage{
 		return !this.areElementsPresent(addUserLinkLocator, usersLinkLocator);
 	}	
 	
+	public AddUserPage openAddUserPage(){
+		driver.findElement(addUserLinkLocator).click();
+		return new AddUserPage(driver);
+	}
+	
+	public UsersPage openUsersPage(){
+		driver.findElement(usersLinkLocator).click();
+		return new UsersPage(driver);
+	}	
 }

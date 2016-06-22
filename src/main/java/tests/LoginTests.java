@@ -20,18 +20,17 @@ public class LoginTests extends AbstractTest{
 	public void test_login_as_valid_user(String username, String password){
 		LoginPage loginPage = new LoginPage(driver);		
 		MainPage mainPage = loginPage.logIn(username, password);
-		assertTrue(mainPage.pageLoaded());
-						
+		assertTrue(mainPage.pageLoaded());						
 	}
 	
-	@Test(dataProvider = "operator_users")
+	@Test(dataProvider = "operator_user")
 	public void test_login_as_operator(String username, String password){
 		LoginPage loginPage = new LoginPage(driver);		
 		MainPage mainPage = loginPage.logIn(username, password);
 		assertTrue(mainPage.loggedInAsOperator());		
 	}
 	
-	@Test(dataProvider = "admin_users")
+	@Test(dataProvider = "admin_user")
 	public void test_login_as_admin(String username, String password){
 		LoginPage loginPage = new LoginPage(driver);		
 		MainPage mainPage = loginPage.logIn(username, password);
@@ -60,12 +59,12 @@ public class LoginTests extends AbstractTest{
 	}	
 	
 	@DataProvider
-	public static Object[][] admin_users(){
-		return DataProviderGenerator.getData(new File("test-input/admin_users.csv"));
+	public static Object[][] admin_user(){
+		return DataProviderGenerator.getData(new File("test-input/admin_user.csv"));
 	}	
 	
 	@DataProvider
-	public static Object[][] operator_users(){
-		return DataProviderGenerator.getData(new File("test-input/operator_users.csv"));
+	public static Object[][] operator_user(){
+		return DataProviderGenerator.getData(new File("test-input/operator_user.csv"));
 	}	
 }
