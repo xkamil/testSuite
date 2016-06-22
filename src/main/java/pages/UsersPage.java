@@ -10,6 +10,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.Select;
 
 public class UsersPage extends AbstractPage{
 	public static final int QUANTITY_10 = 10;
@@ -86,6 +87,17 @@ public class UsersPage extends AbstractPage{
 		}
 		return null;		
 	}
+	
+	public boolean checkIfAllUsersContainsText(String text){
+		List<String> users = getAllUsersAsTextList();
+		System.out.println("Checking users count: " + users.size() + " for text: " + text);
+		for(String user : users){
+			if(!user.contains(text)){
+				return false;
+			}
+		}
+		return true;
+	}
 
 	public boolean isSuccessAlertPresent(){
 		try{
@@ -96,5 +108,10 @@ public class UsersPage extends AbstractPage{
 		}catch(Exception ex){  //TODO replace with proper Exception (for element not found exception)
 			return false;
 		}
+	}
+
+	public void setUserFilter(String filter){
+		Select roleFilter = new Select(roleFilterSelect);
+		roleFilter.selectByVisibleText(filter);
 	}
 }

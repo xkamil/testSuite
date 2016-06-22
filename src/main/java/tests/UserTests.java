@@ -1,6 +1,7 @@
 package tests;
 
 import java.io.File;
+import java.util.List;
 import java.util.logging.Level;
 
 import org.openqa.selenium.WebElement;
@@ -18,6 +19,27 @@ import static org.junit.Assert.*;
 
 public class UserTests extends AbstractTest{
 		
+	@Test
+	public void test_user_filter_by_role_admin(){
+		UsersPage usersPage = new LoginPage(driver).logInAsAdmin().openUsersPage();
+		usersPage.setUserFilter(UsersPage.FILTER_ADMIN);
+		assertTrue(usersPage.checkIfAllUsersContainsText(UsersPage.FILTER_ADMIN));
+	}
+
+	@Test
+	public void test_user_filter_by_role_operator(){
+		UsersPage usersPage = new LoginPage(driver).logInAsAdmin().openUsersPage();
+		usersPage.setUserFilter(UsersPage.FILTER_OPERATOR);
+		assertTrue(usersPage.checkIfAllUsersContainsText(UsersPage.FILTER_OPERATOR));
+	}	
+	
+	@Test
+	public void test_user_filter_by_role_agent(){
+		UsersPage usersPage = new LoginPage(driver).logInAsAdmin().openUsersPage();
+		usersPage.setUserFilter(UsersPage.FILTER_AGENT);
+		assertTrue(usersPage.checkIfAllUsersContainsText(UsersPage.FILTER_AGENT));
+	}
+	/*
 	@Test
 	public void test_username_auto_fill_for_agent(){
 		AddUserPage addUserPage = new LoginPage(driver).logInAsAdmin().openAddUserPage();
@@ -125,7 +147,7 @@ public class UserTests extends AbstractTest{
 			fail("Added user not found!");
 		}				
 	}	
-
+*/
 	@BeforeMethod
 	public  void setUpTestMethod(){
 		initWebDriver();
