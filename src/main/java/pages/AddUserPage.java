@@ -1,5 +1,6 @@
 package pages;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -25,6 +26,8 @@ public class AddUserPage extends AbstractPage{
 	private WebElement userNameField;		
 	@FindBy(name="registration")
 	private WebElement registrationButton;		
+	
+	private static By successAlert = By.cssSelector("div[class='callout callout-danger'] > h4");
 	
 	public AddUserPage(WebDriver driver){
 		super(driver);
@@ -64,6 +67,18 @@ public class AddUserPage extends AbstractPage{
 	
 	public String getUsername(){
 		return userNameField.getAttribute("value");
+	}
+	
+	public boolean isDangerAlertPresent(){
+		try {
+			if (driver.findElement(successAlert).isDisplayed()) {
+				return true;
+			}
+			return false;
+		} catch (Exception ex) { // TODO replace with proper Exception (for
+									// element not found exception)
+			return false;
+		}		
 	}
 	
 }

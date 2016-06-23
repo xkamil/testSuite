@@ -11,7 +11,9 @@
 	<test name="test_all">
 		<classes>
 			<class name="tests.UserTests">
-
+				<methods>
+					<include name="test_add_user_with_duplicate_email"></include>
+				</methods>
 			</class>
 		</classes>
 	</test>
