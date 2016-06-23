@@ -20,6 +20,19 @@ import static org.junit.Assert.*;
 public class UserTests extends AbstractTest{
 		
 	@Test
+	public void test_paginator(){
+		UsersPage usersPage = new LoginPage(driver).logInAsAdmin().openUsersPage();
+		usersPage.deleteUser("Śmieszek");
+		try {
+			Thread.sleep(5000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	
+	@Test
 	public void test_user_filter_by_role_admin(){
 		UsersPage usersPage = new LoginPage(driver).logInAsAdmin().openUsersPage();
 		usersPage.setUserFilter(UsersPage.FILTER_ADMIN);
@@ -148,6 +161,7 @@ public class UserTests extends AbstractTest{
 		}				
 	}	
 
+ 
 	@BeforeMethod
 	public  void setUpTestMethod(){
 		initWebDriver();

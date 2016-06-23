@@ -33,23 +33,31 @@ public class UsersPage extends AbstractPage {
 		PageFactory.initElements(driver, this);
 	}
 
+	//TODO usunąć tą meteodę testującą Paginatora
+	public int countUsers(){
+		Paginator paginator = new Paginator(driver, paginateButton);
+		int users = 0;
+		
+		do{
+			users += driver.findElements(userRow).size();
+			System.out.println("Found users on page: " + driver.findElements(userRow).size() );
+			paginator.next();
+		}while(paginator.hasNext());
+		
+		return users;
+	}
+	
 	public List<String> getAllUsersAsTextList() {
-		List<WebElement> paginateButtons = driver.findElements(paginateButton);
 		List<String> allUsers = new ArrayList<>();
-		if (paginateButtons.size() > 0) {
-			for (int i = 0; i < paginateButtons.size(); i++) {
-				paginateButtons.get(i).click();
-				List<WebElement> usersOnPage = driver.findElements(userRow);
-				for (WebElement wUsr : usersOnPage) {
-					allUsers.add(wUsr.getText());
-				}
-			}
-		} else {
+		Paginator paginator = new Paginator(driver, paginateButton);
+		
+		do{
 			List<WebElement> usersOnPage = driver.findElements(userRow);
 			for (WebElement wUsr : usersOnPage) {
 				allUsers.add(wUsr.getText());
 			}
-		}
+			paginator.next();
+		}while(paginator.hasNext());
 		return allUsers;
 	}
 
@@ -73,67 +81,41 @@ public class UsersPage extends AbstractPage {
 	}
 
 	public void openUserPage(String... textParams) {
-		List<WebElement> paginateButtons = driver.findElements(paginateButton);
 		WebElement user = null;
-		if (paginateButtons.size() > 0) {
-			for (int i = 0; i < paginateButtons.size(); i++) {
-				paginateButtons.get(i).click();
-				List<WebElement> usersOnPage = driver.findElements(userRow);
-				for (WebElement currentUser : usersOnPage) {
-					if (this.isStringContainsText(currentUser.getText(), textParams)) {
-						user = currentUser;
-						break;
-					}
-				}
-				if (user != null) {
-					break;
-				}
-			}
-		} else {
-			List<WebElement> usersOnPage = driver.findElements(userRow);
-			for (WebElement currentUser : usersOnPage) {
-				if (this.isStringContainsText(currentUser.getText(), textParams)) {
+		Paginator paginator = new Paginator(driver, paginateButton);
+		do{
+			List<WebElement> visibleUsers = driver.findElements(userRow);
+			for(WebElement currentUser : visibleUsers){
+				if(this.isStringContainsText(currentUser.getText(), textParams)){
 					user = currentUser;
 					break;
 				}
 			}
-		}
-
-		if (user != null) {
-			user.findElement(By.cssSelector("td[class='sorting_1'] > a")).click();
-		}
+			if(user != null){
+				user.findElement(By.cssSelector("td[class='sorting_1'] > a")).click();
+				break;
+			}			
+			paginator.next();
+		}while(paginator.hasNext() && user == null);
 	}
 
 	public void deleteUser(String... textParams) {
-		List<WebElement> paginateButtons = driver.findElements(paginateButton);
 		WebElement user = null;
-		if (paginateButtons.size() > 0) {
-			for (int i = 0; i < paginateButtons.size(); i++) {
-				paginateButtons.get(i).click();
-				List<WebElement> usersOnPage = driver.findElements(userRow);
-				for (WebElement currentUser : usersOnPage) {
-					if (this.isStringContainsText(currentUser.getText(), textParams)) {
-						user = currentUser;
-						break;
-					}
-				}
-				if (user != null) {
-					break;
-				}
-			}
-		}else{
-			List<WebElement> usersOnPage = driver.findElements(userRow);
-			for (WebElement currentUser : usersOnPage) {
-				if (this.isStringContainsText(currentUser.getText(), textParams)) {
+		Paginator paginator = new Paginator(driver, paginateButton);
+		do{
+			List<WebElement> visibleUsers = driver.findElements(userRow);
+			for(WebElement currentUser : visibleUsers){
+				if(this.isStringContainsText(currentUser.getText(), textParams)){
 					user = currentUser;
 					break;
 				}
-			}		
-		}
-
-		if (user != null) {
-			user.findElement(By.cssSelector("td[class='td-delete-width'] > a")).click();
-		}
+			}
+			if(user != null){
+				user.findElement(By.cssSelector("td[class='td-delete-width'] > a")).click();
+				break;
+			}			
+			paginator.next();
+		}while(paginator.hasNext() && user == null);
 	}
 
 	public boolean checkIfAllUsersContainsText(String text) {
