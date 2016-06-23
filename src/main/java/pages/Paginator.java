@@ -2,15 +2,9 @@ package pages;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
-
 import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindAll;
-import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.ui.Select;
 
 public class Paginator implements Iterator<WebElement>{
 	
@@ -26,15 +20,13 @@ public class Paginator implements Iterator<WebElement>{
 	}
 	
 	public void initElements(){
-		CopyOnWriteArrayList cArray;
-		paginationButtons = new CopyOnWriteArrayList(driver.findElements(locator));
+		paginationButtons = new CopyOnWriteArrayList<WebElement>(driver.findElements(locator));
 		
 		for(WebElement paginateButton : paginationButtons){
 			if(!paginateButton.isDisplayed() || !paginateButton.isEnabled()){
 				paginationButtons.remove(paginateButton);
 			}
-		}
-		
+		}	
 	}
 	
 	@Override
@@ -53,8 +45,7 @@ public class Paginator implements Iterator<WebElement>{
 		if(paginationButtons.size() > 1 && pageIndex > 0 && pageIndex < paginationButtons.size()){
 			if(paginationButtons.get(pageIndex).isDisplayed() && paginationButtons.get(pageIndex).isEnabled()){
 				paginationButtons.get(pageIndex).click();
-			}		
-			
+			}				
 		}
 		pageIndex++;
 		return null;	

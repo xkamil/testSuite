@@ -1,15 +1,10 @@
 package tests;
 
 import java.io.File;
-import java.util.List;
 import java.util.logging.Level;
-
-import org.openqa.selenium.WebElement;
 import org.testng.annotations.*;
-
 import pages.AddUserPage;
 import pages.LoginPage;
-import pages.MainPage;
 import pages.UsersPage;
 import utils.DataGenerator;
 import utils.DataProviderGenerator;

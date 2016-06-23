@@ -4,10 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
@@ -31,20 +29,6 @@ public class UsersPage extends AbstractPage {
 	public UsersPage(WebDriver driver) {
 		super(driver);
 		PageFactory.initElements(driver, this);
-	}
-
-	//TODO usunąć tą meteodę testującą Paginatora
-	public int countUsers(){
-		Paginator paginator = new Paginator(driver, paginateButton);
-		int users = 0;
-		
-		do{
-			users += driver.findElements(userRow).size();
-			System.out.println("Found users on page: " + driver.findElements(userRow).size() );
-			paginator.next();
-		}while(paginator.hasNext());
-		
-		return users;
 	}
 	
 	public List<String> getAllUsersAsTextList() {
