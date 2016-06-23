@@ -5,6 +5,7 @@ import java.util.logging.Level;
 import org.testng.annotations.*;
 import pages.AddUserPage;
 import pages.LoginPage;
+import pages.MainPage;
 import pages.UsersPage;
 import utils.DataGenerator;
 import utils.DataProviderGenerator;
@@ -13,16 +14,33 @@ import utils.Screenshot;
 import static org.junit.Assert.*;
 
 public class UserTests extends AbstractTest{
-		
+			
 	@Test
-	public void test_paginator(){
+	public void test_user_list_filter_by_quantity(){
 		UsersPage usersPage = new LoginPage(driver).logInAsAdmin().openUsersPage();
-		usersPage.deleteUser("Śmieszek");
-		try {
-			Thread.sleep(5000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		int usersCount = usersPage.getAllUsersAsTextList().size();
+		new MainPage(driver).openUsersPage();
+		
+		
+		usersPage.setListLenghtFilter("10");
+		int usersOnPage = usersPage.getVisibleUsers().size();
+		if(usersCount >= 10 && usersOnPage != 10){
+			fail("Selected list size: 10 , Users on list: " + usersOnPage);
+		}
+		usersPage.setListLenghtFilter("25");
+		usersOnPage = usersPage.getVisibleUsers().size();
+		if(usersCount >= 25 && usersOnPage != 25){
+			fail("Selected list size: 25 , Users on list: " + usersOnPage);
+		}
+		usersPage.setListLenghtFilter("50");
+		usersOnPage = usersPage.getVisibleUsers().size();
+		if(usersCount >= 50 && usersOnPage != 25){
+			fail("Selected list size: 50 , Users on list: " + usersOnPage);
+		}
+		usersPage.setListLenghtFilter("100");
+		usersOnPage = usersPage.getVisibleUsers().size();
+		if(usersCount >= 100 && usersOnPage != 25){
+			fail("Selected list size: 100 , Users on list: " + usersOnPage);
 		}
 	}
 	
@@ -31,21 +49,21 @@ public class UserTests extends AbstractTest{
 	public void test_user_filter_by_role_admin(){
 		UsersPage usersPage = new LoginPage(driver).logInAsAdmin().openUsersPage();
 		usersPage.setUserFilter(UsersPage.FILTER_ADMIN);
-		assertTrue(usersPage.checkIfAllUsersContainsText(UsersPage.FILTER_ADMIN));
+		assertTrue(usersPage.checkIfAllUsersHaveSameRole(UsersPage.FILTER_ADMIN));
 	}
 
 	@Test
 	public void test_user_filter_by_role_operator(){
 		UsersPage usersPage = new LoginPage(driver).logInAsAdmin().openUsersPage();
 		usersPage.setUserFilter(UsersPage.FILTER_OPERATOR);
-		assertTrue(usersPage.checkIfAllUsersContainsText(UsersPage.FILTER_OPERATOR));
+		assertTrue(usersPage.checkIfAllUsersHaveSameRole(UsersPage.FILTER_OPERATOR));
 	}	
 	
 	@Test
 	public void test_user_filter_by_role_agent(){
 		UsersPage usersPage = new LoginPage(driver).logInAsAdmin().openUsersPage();
 		usersPage.setUserFilter(UsersPage.FILTER_AGENT);
-		assertTrue(usersPage.checkIfAllUsersContainsText(UsersPage.FILTER_AGENT));
+		assertTrue(usersPage.checkIfAllUsersHaveSameRole(UsersPage.FILTER_AGENT));
 	}
 	
 	@Test
@@ -155,7 +173,6 @@ public class UserTests extends AbstractTest{
 			fail("Added user not found!");
 		}				
 	}	
-
  
 	@BeforeMethod
 	public  void setUpTestMethod(){

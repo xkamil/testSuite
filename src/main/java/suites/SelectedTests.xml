@@ -11,9 +11,7 @@
 	<test name="test_all">
 		<classes>
 			<class name="tests.UserTests">
-				<methods>
-					<include name="test_user_filter_by_role_admin"></include>
-				</methods>
+
 			</class>
 		</classes>
 	</test>

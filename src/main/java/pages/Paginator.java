@@ -20,8 +20,7 @@ public class Paginator implements Iterator<WebElement>{
 	}
 	
 	public void initElements(){
-		paginationButtons = new CopyOnWriteArrayList<WebElement>(driver.findElements(locator));
-		
+		paginationButtons = new CopyOnWriteArrayList<WebElement>(driver.findElements(locator));		
 		for(WebElement paginateButton : paginationButtons){
 			if(!paginateButton.isDisplayed() || !paginateButton.isEnabled()){
 				paginationButtons.remove(paginateButton);

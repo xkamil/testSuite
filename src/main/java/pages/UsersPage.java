@@ -45,15 +45,11 @@ public class UsersPage extends AbstractPage {
 		return allUsers;
 	}
 
-	public List<String> getAllVisibleUsersAsTextList() {
-		List<String> allVisibleUsers = new ArrayList<>();
-		List<WebElement> usersOnPage = driver.findElements(userRow);
-		for (WebElement wUsr : usersOnPage) {
-			allVisibleUsers.add(wUsr.getText());
-		}
-		return allVisibleUsers;
+	public List<WebElement> getVisibleUsers() {
+		return driver.findElements(userRow);
 	}
-
+	
+	
 	public String findUserBy(String... textParams) {
 		List<String> users = getAllUsersAsTextList();
 		for (String user : users) {
@@ -102,11 +98,10 @@ public class UsersPage extends AbstractPage {
 		}while(paginator.hasNext() && user == null);
 	}
 
-	public boolean checkIfAllUsersContainsText(String text) {
+	public boolean checkIfAllUsersHaveSameRole(String role) {
 		List<String> users = getAllUsersAsTextList();
-		System.out.println("Checking users count: " + users.size() + " for text: " + text);
 		for (String user : users) {
-			if (!user.contains(text)) {
+			if (!user.contains(role)) {
 				return false;
 			}
 		}
@@ -129,4 +124,10 @@ public class UsersPage extends AbstractPage {
 		Select roleFilter = new Select(roleFiltert);
 		roleFilter.selectByVisibleText(filter);
 	}
+
+	public void setListLenghtFilter(String value){
+		Select listLengthSelect = new Select(listLenghtFilter);
+		listLengthSelect.selectByVisibleText(value);
+	}
+
 }
