@@ -44,7 +44,6 @@ public class UserTests extends AbstractTest{
 		}
 	}
 	
-	
 	@Test
 	public void test_user_filter_by_role_admin(){
 		UsersPage usersPage = new LoginPage(driver).logInAsAdmin().openUsersPage();
@@ -110,10 +109,9 @@ public class UserTests extends AbstractTest{
 			fail("Test fail: username should be same as email number for admin: email/username: " + email + "/" + "username");
 		}
 	}
-	
-	
+		
 	@Test
-	public void test_add_user_with_duplicate_email(){
+	public void test_add_user_with_duplicated_email(){
 		AddUserPage addUserPage = new LoginPage(driver).logInAsAdmin().openAddUserPage();
 		String firstName = DataGenerator.getRandomString(DataGenerator.POLISH_LETTERS, 10);
 		String lastName = DataGenerator.getRandomString(DataGenerator.POLISH_LETTERS, 10);
@@ -141,6 +139,41 @@ public class UserTests extends AbstractTest{
 		if(!addUserPage.isDangerAlertPresent()){
 			fail("User with duplicated email added to system!");
 		}
+	}
+	
+	@Test
+	public void test_add_user_with_duplicated_phone_number(){
+		// Add valid user
+		AddUserPage addUserPage = new LoginPage(driver).logInAsAdmin().openAddUserPage();
+		String firstName = DataGenerator.getRandomString(DataGenerator.POLISH_LETTERS, 10);
+		String lastName = DataGenerator.getRandomString(DataGenerator.POLISH_LETTERS, 10);
+		String phoneNumber = String.valueOf(DataGenerator.getRandomNumber(9));
+		String email = DataGenerator.getRandomEmail("example.com");	
+		String role = AddUserPage.ROLE_AGENT;
+		LOGGER.log(Level.INFO, "Adding user: " + firstName + " | " + lastName + " | " + phoneNumber + " | " + email);
+		addUserPage.addUser(firstName, lastName, role, phoneNumber, email);
+		UsersPage usersPage = new UsersPage(driver);
+		if(!usersPage.isSuccessAlertPresent()){
+			fail("Success alert not present after saved new user. Check screenshots");
+			Screenshot.getInstance().takeScreenshot(driver, "test_add_agent");
+		}
+		
+		String user = new MainPage(driver).openUsersPage().findUserBy(firstName, lastName, phoneNumber, role);
+		if(user == null || user == ""){
+			fail("Added user not found!");
+		}
+		
+		// Add user with phone same as previous user
+		new MainPage(driver).openAddUserPage();
+		firstName = DataGenerator.getRandomString(DataGenerator.POLISH_LETTERS, 10);
+		lastName = DataGenerator.getRandomString(DataGenerator.POLISH_LETTERS, 10);
+		email = DataGenerator.getRandomEmail("example.com");
+		LOGGER.log(Level.INFO, "Adding user with duplicated email: " + firstName + " | " + lastName + " | " + phoneNumber + " | " + email);
+		addUserPage.addUser(firstName, lastName, role, phoneNumber, email);
+		user = new MainPage(driver).openUsersPage().findUserBy(firstName, lastName, phoneNumber, role);
+		if(user != null ){
+			fail("Added user with duplicated phone number!");
+		}		
 	}
 	
 	@Test

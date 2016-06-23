@@ -16,12 +16,12 @@ public class MainPage extends AbstractPage{
 	@FindBy(partialLinkText="Dodaj klienta")
 	private WebElement addClientLink;
 
-	@FindBy(partialLinkText="Wyloguj się")
+	@FindBy(partialLinkText="Wyloguj si�")
 	private WebElement logoutLink;
 	
-	private static By addUserLinkLocator = By.partialLinkText("Dodaj użytkownika");
+	private static By addUserLinkLocator = By.partialLinkText("ytkownika");
 	
-	private static By usersLinkLocator = By.partialLinkText("Użytkownicy");
+	private static By usersLinkLocator = By.partialLinkText("ytkownicy");
 	
 	public MainPage(WebDriver driver){
 		super(driver);
