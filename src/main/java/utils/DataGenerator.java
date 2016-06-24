@@ -4,7 +4,7 @@ import java.util.Random;
 
 public class DataGenerator {
 	public static final String ENGLISH_LETTERS = "abcdefghijklmnopqrstuvwxyz";
-	public static final String POLISH_LETTERS="a¹bcædeêfghijkl³mnñoóprsœtuwyzŸ¿";
+	public static final String POLISH_LETTERS="aÄ…bcÄ‡deÄ™fghijklÅ‚mnÅ„oÃ³prsÅ›tuwyzÅ¼Åº";
 	
 	public static char getRandomCharacter(String letters){
 		Random rnd = new Random();
