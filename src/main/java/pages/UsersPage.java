@@ -6,6 +6,7 @@ import java.util.List;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
@@ -37,8 +38,10 @@ public class UsersPage extends AbstractPage {
 		
 		do{
 			List<WebElement> usersOnPage = driver.findElements(userRow);
+			System.out.println("Found users: " + usersOnPage.size());
 			for (WebElement wUsr : usersOnPage) {
 				allUsers.add(wUsr.getText());
+				
 			}
 			paginator.next();
 		}while(paginator.hasNext());
@@ -80,22 +83,24 @@ public class UsersPage extends AbstractPage {
 	}
 
 	public void deleteUser(String... textParams) {
+		boolean foundAndDeleted = false;
 		WebElement user = null;
 		Paginator paginator = new Paginator(driver, paginateButton);
 		do{
 			List<WebElement> visibleUsers = driver.findElements(userRow);
 			for(WebElement currentUser : visibleUsers){
 				if(this.isStringContainsText(currentUser.getText(), textParams)){
-					user = currentUser;
+					Actions action = new Actions(driver);
+					WebElement deleteLink = currentUser.findElement(By.cssSelector("td[class='td-delete-width'] > a"));
+					action.moveToElement(currentUser).moveToElement(deleteLink).click().build().perform();
+					
+					foundAndDeleted = true;
+					System.out.println("Found user to delete. Deleting user.");
 					break;
 				}
-			}
-			if(user != null){
-				user.findElement(By.cssSelector("td[class='td-delete-width'] > a")).click();
-				break;
 			}			
 			paginator.next();
-		}while(paginator.hasNext() && user == null);
+		}while(paginator.hasNext() && foundAndDeleted == false);
 	}
 
 	public boolean checkIfAllUsersHaveSameRole(String role) {

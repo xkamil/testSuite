@@ -2,7 +2,7 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
 
 <suite name="AllTests" verbose="0">
-	<parameter name="driver" value="chrome" />
+	<parameter name="driver" value="firefox" />
 	<parameter name="driverPath" value="web-drivers/chromedriver.exe" />
 	<parameter name="baseUrl" value="http://optidata.kiss1.pl/login" />
 	<!-- <parameter name="os" value="windows"/> -->
@@ -12,7 +12,7 @@
 		<classes>
 			<class name="tests.UserTests">
 				<methods>
-					<include name="test_add_user_with_duplicated_phone_number"></include>
+					<include name="test_add_user_with_phone_assigned_to_deleted_user"></include>
 				</methods>
 			</class>
 		</classes>
