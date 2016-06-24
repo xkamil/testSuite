@@ -12,7 +12,7 @@
 		<classes>
 			<class name="tests.UserTests">
 				<methods>
-					<include name="test_add_user_with_phone_assigned_to_deleted_user"></include>
+					<include name="test_add_user_with_email_assigned_to_deleted_user"></include>
 				</methods>
 			</class>
 		</classes>

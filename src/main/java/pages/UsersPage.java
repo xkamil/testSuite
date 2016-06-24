@@ -38,7 +38,6 @@ public class UsersPage extends AbstractPage {
 		
 		do{
 			List<WebElement> usersOnPage = driver.findElements(userRow);
-			System.out.println("Found users: " + usersOnPage.size());
 			for (WebElement wUsr : usersOnPage) {
 				allUsers.add(wUsr.getText());
 				

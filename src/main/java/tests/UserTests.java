@@ -159,6 +159,58 @@ public class UserTests extends AbstractTest{
 			fail("Added user not found!");
 		}
 	}
+
+	@Test
+	public void test_add_user_with_email_assigned_to_deleted_user() {
+		// Add valid user
+		AddUserPage addUserPage = new LoginPage(driver).logInAsAdmin().openAddUserPage();
+		String firstName = DataGenerator.getRandomString(DataGenerator.POLISH_LETTERS, 10);
+		String lastName = DataGenerator.getRandomString(DataGenerator.POLISH_LETTERS, 10);
+		String phoneNumber = String.valueOf(DataGenerator.getRandomNumber(9));
+		String email = DataGenerator.getRandomEmail("example.com");
+		String role = AddUserPage.ROLE_AGENT;
+		LOGGER.log(Level.INFO, "Adding user: " + firstName + " | " + lastName + " | " + phoneNumber + " | " + email);
+		addUserPage.addUser(firstName, lastName, role, phoneNumber, email);
+		UsersPage usersPage = new UsersPage(driver);
+		// Checks if user is saved
+		if (!usersPage.isSuccessAlertPresent()) {
+			fail("Success alert not present after saved new user. Check screenshots");
+			Screenshot.getInstance().takeScreenshot(driver, "test_add_user_with_phone_assigned_to_deleted_user_1");
+		}
+		String user = new MainPage(driver).openUsersPage().findUserBy(firstName, lastName, role);
+		if (user == null || user == "") {
+			fail("Added user not found!");
+		}
+
+		// Delete added user
+		usersPage = new MainPage(driver).openUsersPage();
+		usersPage.deleteUser(firstName, lastName, phoneNumber);
+		LOGGER.log(Level.INFO, "Deleted user: " + firstName + " | " + lastName + " | " + phoneNumber + " | " + email);
+		// Checks if user is deleted
+		user = new MainPage(driver).openUsersPage().findUserBy(firstName, lastName, role);
+		if (user != null) {
+			fail("User is not deleted!");
+		}	
+		
+		// Add user with email number assigned to deleted user
+		addUserPage = new MainPage(driver).openAddUserPage();
+		firstName = DataGenerator.getRandomString(DataGenerator.POLISH_LETTERS, 10);
+		lastName = DataGenerator.getRandomString(DataGenerator.POLISH_LETTERS, 10);
+		phoneNumber = String.valueOf(DataGenerator.getRandomNumber(9));
+		LOGGER.log(Level.INFO, "Adding user: " + firstName + " | " + lastName + " | " + phoneNumber + " | " + email);
+		addUserPage.addUser(firstName, lastName, role, phoneNumber, email);
+		usersPage = new UsersPage(driver);
+		// Checks if user is saved
+		if (!usersPage.isSuccessAlertPresent()) {
+			fail("Success alert not present after saved new user. Check screenshots");
+			Screenshot.getInstance().takeScreenshot(driver, "test_add_user_with_phone_assigned_to_deleted_user_2");
+		}
+		user = new MainPage(driver).openUsersPage().findUserBy(firstName, lastName, role);
+		if (user == null || user == "") {
+			fail("Added user not found!");
+		}
+	}
+	
 	
 	@Test
 	public void test_add_user_with_duplicated_email(){
