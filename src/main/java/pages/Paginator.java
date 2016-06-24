@@ -11,7 +11,7 @@ public class Paginator implements Iterator<WebElement>{
 	private List<WebElement> paginationButtons;
 	private WebDriver driver;
 	private By locator;	
-	private int pageIndex = 0;
+	private int pageIndex = 1;
 	
 	public Paginator(WebDriver driver, By locator){
 		this.driver = driver;
