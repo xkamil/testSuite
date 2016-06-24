@@ -1,8 +1,12 @@
 ﻿package pages;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
@@ -28,6 +32,7 @@ public class AddUserPage extends AbstractPage{
 	private WebElement registrationButton;		
 	
 	private static By successAlert = By.cssSelector("div[class='callout callout-danger'] > h4");
+	private static By validationError = By.cssSelector("div > label[class='error']");
 	
 	public AddUserPage(WebDriver driver){
 		super(driver);
@@ -81,4 +86,14 @@ public class AddUserPage extends AbstractPage{
 		}		
 	}
 	
+	public List<String> getValidationErrors(){
+		List<String> errors = new ArrayList<>();
+		List<WebElement> validationErrorsElements = driver.findElements(validationError);
+		for(WebElement errorElement : validationErrorsElements){
+			if(errorElement.getText().trim() != ""){
+				errors.add(errorElement.getText().trim());
+			}
+		}
+		return errors;
+	}
 }

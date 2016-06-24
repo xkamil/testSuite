@@ -16,7 +16,7 @@ public class MainPage extends AbstractPage{
 	@FindBy(partialLinkText="Dodaj klienta")
 	private WebElement addClientLink;
 
-	@FindBy(partialLinkText="Wyloguj si™")
+	@FindBy(partialLinkText="Wyloguj si")
 	private WebElement logoutLink;
 	
 	private static By addUserLinkLocator = By.partialLinkText("ytkownika");

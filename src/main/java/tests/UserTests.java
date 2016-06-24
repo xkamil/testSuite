@@ -211,7 +211,6 @@ public class UserTests extends AbstractTest{
 		}
 	}
 	
-	
 	@Test
 	public void test_add_user_with_duplicated_email(){
 		AddUserPage addUserPage = new LoginPage(driver).logInAsAdmin().openAddUserPage();
@@ -341,8 +340,98 @@ public class UserTests extends AbstractTest{
 		}				
 	}	
  
+	@Test
+	public void test_add_user_with_missing_first_name(){
+		AddUserPage addUserPage = new LoginPage(driver).logInAsAdmin().openAddUserPage();
+		String firstName = "";
+		String lastName = DataGenerator.getRandomString(DataGenerator.POLISH_LETTERS, 10);
+		String phoneNumber = String.valueOf(DataGenerator.getRandomNumber(9));
+		String email = DataGenerator.getRandomEmail("example.com");	
+		String role = AddUserPage.ROLE_AGENT;
+		LOGGER.log(Level.INFO, "Adding user: " + firstName + " | " + lastName + " | " + phoneNumber + " | " + email);
+		addUserPage.addUser(firstName, lastName, role, phoneNumber, email);
+		for(String validationError : addUserPage.getValidationErrors()){
+			LOGGER.log(Level.INFO, "Validation error: " + validationError);
+		}
+		if(addUserPage.getValidationErrors().size() != 1){
+			fail("There is no validation error when we add user with missing first name");
+		}
+	}
+
+	@Test
+	public void test_add_user_with_missing_last_name(){
+		AddUserPage addUserPage = new LoginPage(driver).logInAsAdmin().openAddUserPage();
+		String firstName = DataGenerator.getRandomString(DataGenerator.POLISH_LETTERS, 10);
+		String lastName = "";
+		String phoneNumber = String.valueOf(DataGenerator.getRandomNumber(9));
+		String email = DataGenerator.getRandomEmail("example.com");	
+		String role = AddUserPage.ROLE_AGENT;
+		LOGGER.log(Level.INFO, "Adding user: " + firstName + " | " + lastName + " | " + phoneNumber + " | " + email);
+		addUserPage.addUser(firstName, lastName, role, phoneNumber, email);
+		for(String validationError : addUserPage.getValidationErrors()){
+			LOGGER.log(Level.INFO, "Validation error: " + validationError);
+		}
+		if(addUserPage.getValidationErrors().size() != 1){
+			fail("There is no validation error when we add user with missing last name");
+		}
+	}	
+
+	@Test
+	public void test_add_agent_with_missing_phone_number(){
+		AddUserPage addUserPage = new LoginPage(driver).logInAsAdmin().openAddUserPage();
+		String firstName = DataGenerator.getRandomString(DataGenerator.POLISH_LETTERS, 10);
+		String lastName = DataGenerator.getRandomString(DataGenerator.POLISH_LETTERS, 10);
+		String phoneNumber = "";
+		String email = DataGenerator.getRandomEmail("example.com");	
+		String role = AddUserPage.ROLE_AGENT;
+		LOGGER.log(Level.INFO, "Adding user: " + firstName + " | " + lastName + " | " + phoneNumber + " | " + email);
+		addUserPage.addUser(firstName, lastName, role, phoneNumber, email);
+		for(String validationError : addUserPage.getValidationErrors()){
+			LOGGER.log(Level.INFO, "Validation error: " + validationError);
+		}
+		if(addUserPage.getValidationErrors().size() != 1){
+			fail("There is no validation error when we add user with missing phone number");
+		}
+	}	
+
+	@Test
+	public void test_add_operator_with_missing_email(){
+		AddUserPage addUserPage = new LoginPage(driver).logInAsAdmin().openAddUserPage();
+		String firstName = DataGenerator.getRandomString(DataGenerator.POLISH_LETTERS, 10);
+		String lastName = DataGenerator.getRandomString(DataGenerator.POLISH_LETTERS, 10);
+		String phoneNumber = String.valueOf(DataGenerator.getRandomNumber(9));
+		String email = "";	
+		String role = AddUserPage.ROLE_OPERATOR;
+		LOGGER.log(Level.INFO, "Adding user: " + firstName + " | " + lastName + " | " + phoneNumber + " | " + email);
+		addUserPage.addUser(firstName, lastName, role, phoneNumber, email);
+		for(String validationError : addUserPage.getValidationErrors()){
+			LOGGER.log(Level.INFO, "Validation error: " + validationError);
+		}
+		if(addUserPage.getValidationErrors().size() != 1){
+			fail("There is no validation error when we add operator with missing email");
+		}
+	}
+	
+	@Test
+	public void test_add_admin_with_missing_email(){
+		AddUserPage addUserPage = new LoginPage(driver).logInAsAdmin().openAddUserPage();
+		String firstName = DataGenerator.getRandomString(DataGenerator.POLISH_LETTERS, 10);
+		String lastName = DataGenerator.getRandomString(DataGenerator.POLISH_LETTERS, 10);
+		String phoneNumber = String.valueOf(DataGenerator.getRandomNumber(9));
+		String email = "";	
+		String role = AddUserPage.ROLE_ADMIN;
+		LOGGER.log(Level.INFO, "Adding user: " + firstName + " | " + lastName + " | " + phoneNumber + " | " + email);
+		addUserPage.addUser(firstName, lastName, role, phoneNumber, email);
+		for(String validationError : addUserPage.getValidationErrors()){
+			LOGGER.log(Level.INFO, "Validation error: " + validationError);
+		}
+		if(addUserPage.getValidationErrors().size() != 1){
+			fail("There is no validation error when we add administrator with missing email");
+		}
+	}
 	
 	
+
 	@BeforeMethod
 	public  void setUpTestMethod(){
 		initWebDriver();
