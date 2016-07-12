@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="AllTests" verbose="0">
+	<parameter name="driver" value="chrome" />
+	<parameter name="baseUrl" value="http://optidata.kiss1.pl/login" />
+	<!-- <parameter name="os" value="windows"/> -->
+	<!-- <parameter name="implicitWait" value="10"/> -->
+
+	<test name="test_all">
+		<classes>
+			<class name="tests.GoogleTest">
+				<methods>
+					<include name="test_add_admin_with_missing_email"></include>
+				</methods>
+			</class>
+		</classes>
+	</test>
+</suite> 
