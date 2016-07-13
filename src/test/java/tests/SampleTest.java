@@ -24,7 +24,7 @@ public class SampleTest extends AbstractTest{
 	@Test
 	public void test_opening_google_site(){
 		driver.get("http://www.google.pl");
-		driver.findElement(By.id("you_cannot_find_this"));
+		this.findElementBy(By.id("nanansaf"), 20);
 		Screenshot.getInstance().takeScreenshot(driver, "test_opening_google_site3");
 	}
 	

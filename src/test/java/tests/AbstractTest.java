@@ -26,10 +26,6 @@ public class AbstractTest {
 		AbstractTest.driverName = driverName;
 		AbstractTest.baseUrl = baseUrl;			
 		Screenshot.getInstance().clearScrrenshotFolder();
-		
-		String system = System.getProperty("os.name");
-		System.out.println("System: " + system);
-		
 	}	
 	
 	public void initWebDriver(String name, String os){
