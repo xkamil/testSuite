@@ -3,10 +3,7 @@
 
 <suite name="AllTests" verbose="0">
 	<parameter name="driver" value="firefox"/>
-	<parameter name="baseUrl" value="http://optidata.kiss1.pl/login"/>
-	<!--  <parameter name="os" value="windows"/> -->
-	<!--  <parameter name="implicitWait" value="10"/> -->
-	
+	<parameter name="baseUrl" value="http://optidata.kiss1.pl/login"/>	
 	<test name="test_all">
 		<packages>
 			<package name="tests"></package>

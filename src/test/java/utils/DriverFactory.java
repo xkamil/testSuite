@@ -10,8 +10,8 @@ import static utils.DriverConstants.*;
 
 
 public final class DriverFactory {
-	public static WebDriver getDriver(String name, String os){
-		String driverPath = DRIVERS_PATH + os + "/" + name + "driver" + getOsSpecificFileExtension(os);
+	public static WebDriver getDriver(String name){
+		String driverPath = DRIVERS_PATH + getDriverFolderSpecificToOs() + "/" + name + "driver" + getOsSpecificFileExtension();
 		
 		switch(name){
 			case DRIVER_FIREFOX : {
@@ -38,9 +38,20 @@ public final class DriverFactory {
 		}
 	}
 	
-	private static String getOsSpecificFileExtension(String os){
-		if(os.equals(OS_WINDOWS)){
+	private static String getOsSpecificFileExtension(){
+		if(isWindows){
 			return ".exe";
+		}
+		return "";
+	}
+	
+	private static String getDriverFolderSpecificToOs(){
+		if(isWindows){
+			return "windows";
+		}else if(isMac){
+			return "mac";
+		}else if(isUnix){
+			return "linux";
 		}
 		return "";
 	}

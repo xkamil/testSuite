@@ -1,71 +1,52 @@
 package tests;
 
-import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
 import java.util.logging.Logger;
-
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.htmlunit.HtmlUnitDriver;
-import org.openqa.selenium.ie.InternetExplorerDriver;
-import org.openqa.selenium.opera.OperaDriver;
-import org.openqa.selenium.safari.SafariDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
-
 import utils.DriverFactory;
 import utils.Screenshot;
 
 public class AbstractTest {
 	protected static final Logger LOGGER = Logger.getLogger(AbstractTest.class.getName());
 	protected static WebDriver driver;
-	protected static int currentImplicitWait;
-	protected static int lastImplicitWait;
 	protected static String baseUrl;
-	protected static String os;
 	protected static String driverName;
-	
+		
 	@BeforeSuite
-	@Parameters({"driver","os","implicitWait","baseUrl"})
-	public void setUpSuite(	@Optional("chrome") String driverName, 
-							@Optional("mac") String os, 
-							@Optional("10") int currentImplicitWait,
+	@Parameters({"driver","baseUrl"})
+	public void setUpSuite(	@Optional("chrome") String driverName,  
 							@Optional("") String baseUrl) {
 		
 		AbstractTest.driverName = driverName;
-		AbstractTest.os = os;
-		AbstractTest.baseUrl = baseUrl;
-		AbstractTest.currentImplicitWait = currentImplicitWait;	
-		
+		AbstractTest.baseUrl = baseUrl;			
 		Screenshot.getInstance().clearScrrenshotFolder();
+		
+		String system = System.getProperty("os.name");
+		System.out.println("System: " + system);
+		
 	}	
 	
 	public void initWebDriver(String name, String os){
-		DriverFactory.getDriver(name, os);
-		setImplicitWait(currentImplicitWait);
+		DriverFactory.getDriver(name);
 	}
 	
 	public void initWebDriver(){
-		driver = DriverFactory.getDriver(driverName, os);
-		setImplicitWait(currentImplicitWait);
+		driver = DriverFactory.getDriver(driverName);
 	}
 	
-	public void setImplicitWait(int seconds){
-		currentImplicitWait = seconds;
-		driver.manage().timeouts().implicitlyWait(seconds, TimeUnit.SECONDS);
-		LOGGER.log(Level.INFO, "Implicit wait changed to " + seconds + " seconds.");
+	public WebElement findElementBy(final By webElement, int explicitTimeInSeconds){
+		return (new WebDriverWait(driver, explicitTimeInSeconds)).until(new ExpectedCondition<WebElement>(){
+			@Override
+			public WebElement apply(WebDriver driver) {
+				return driver.findElement(webElement);
+			}			
+		});
 	}
-	
-	public void changeImplicitWait(int seconds){
-		lastImplicitWait = currentImplicitWait;
-		setImplicitWait(seconds);
-		LOGGER.log(Level.INFO, "Implicit wait changed to " + seconds + " seconds.");
-	}
-	
-	public void restoreImplicitWait(){
-		setImplicitWait(lastImplicitWait);
-		LOGGER.log(Level.INFO, "Implicit wait restored to " + lastImplicitWait + " seconds.");
-	}
+
 }
