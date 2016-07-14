@@ -44,5 +44,13 @@ public class AbstractTest {
 			}			
 		});
 	}
+	
+	public void wait(int seconds) {
+		int time = seconds * 1000;
+		try {
+			Thread.sleep(time);
+		} catch (InterruptedException ex) {
+		}
+	}	
 
 }

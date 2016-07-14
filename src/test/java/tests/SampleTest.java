@@ -1,47 +1,67 @@
 package tests;
 
-import java.io.File;
 import java.util.concurrent.TimeUnit;
-
 import org.openqa.selenium.By;
 import org.testng.annotations.*;
-
-import utils.DataProviderGenerator;
+import pages.*;
 import utils.Screenshot;
 
 public class SampleTest extends AbstractTest{
-	@DataProvider
-	public static Object[][] valid_users(){
-		return DataProviderGenerator.getData(new File("test-input/valid_users.csv"));
-	}
 	
 	@BeforeMethod
-	public void setUpClass(){
+	public void setUpTestMethod(){
 		initWebDriver();
 		driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+		driver.get("http://a1.kiss1.pl/#/");
 	}
 	
-	@Test
-	public void test_opening_google_site(){
-		driver.get("http://www.google.pl");
-		this.findElementBy(By.id("nanansaf"), 20);
-		Screenshot.getInstance().takeScreenshot(driver, "test_opening_google_site3");
+	@Test(enabled=false)
+	public void test_login_as_kda(){
+		LoginPage loginPage = new LoginPage(driver);
+		loginPage.loginAsKda();
 	}
 	
-	@Test
-	public void test_opening_onet_site(){
-		driver.get("http://www.onet.pl");
-		Screenshot.getInstance().takeScreenshot(driver, "test_opening_onet_site3");
+	@Test(enabled=false)
+	public void test_open_tasks_module(){
+		new LoginPage(driver)
+			.loginAsKda();
+		new MainPage(driver)
+			.openTasksModule();
 	}	
 	
-	@Test(dataProvider = "valid_users", enabled = false)
-	public void test_printing_users(String username, String password){
-		System.out.println(username + " | " + password);
+	@Test(enabled=false)
+	public void test_open_new_event_form(){
+		new LoginPage(driver)
+			.loginAsKda();
+		new MainPage(driver)
+			.openTasksModule()
+			.openNewEventForm();
 	}
 	
+	@Test
+	public void test_add_new_event(){
+		new LoginPage(driver)
+			.loginAsKda();  
+		new MainPage(driver)
+			.openTasksModule()  
+			.openNewEventForm(); 
+		new AddEventPage(driver)
+			.selectEventCategory("Spotkanie") 
+			.setEventTitle("Tytuł wydarzenia test1")
+			.setEventDescription("Opis wydarzenia test1")
+			.setEventLastsAllDay()
+			.setDateFrom("13.10.2020")
+			.setDateTo("14.10.2020")
+			.submitForm();	 
+		
+		//TODO add assertion
+	}	
+		
 	@AfterMethod
-	public void tearDownClass(){
+	public void tearDownTestMethod(){
+		wait(10); //wait 5seconds before closing test method - FOR VISIAL DEBUGGING ONLY
 		driver.close();
+		
 	}
 	
 	
