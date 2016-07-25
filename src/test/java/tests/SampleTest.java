@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.interactions.Actions;
 import org.testng.annotations.*;
 
 import utils.DataProviderGenerator;
@@ -24,7 +25,8 @@ public class SampleTest extends AbstractTest{
 	@Test
 	public void test_opening_google_site(){
 		driver.get("http://www.google.pl");
-		this.findElementBy(By.id("nanansaf"), 20);
+		Actions actions = new Actions(driver);
+		actions.click().moveByOffset(0, 200).build().perform();
 		Screenshot.getInstance().takeScreenshot(driver, "test_opening_google_site3");
 	}
 	

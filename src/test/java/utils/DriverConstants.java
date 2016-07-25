@@ -6,6 +6,7 @@ public final class DriverConstants {
 	public static final String DRIVER_SAFARI = "safari";
 	public static final String DRIVER_IE = "internetexplorer";
 	public static final String DRIVER_HTMLUNIT = "htmlunit";
+	public static final String DRIVER_ANDROID = "android";
 	
 	public static final String DRIVERS_PATH = "src/test/resources/drivers/";
 	

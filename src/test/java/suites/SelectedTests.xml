@@ -2,7 +2,7 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
 
 <suite name="AllTests" verbose="0">
-	<parameter name="driver" value="firefox" />
+	<parameter name="driver" value="android" />
 	<parameter name="baseUrl" value="http://optidata.kiss1.pl/login" />
 	<test name="test_all">
 		<classes>

@@ -28,11 +28,12 @@ public class AbstractTest {
 		Screenshot.getInstance().clearScrrenshotFolder();
 	}	
 	
-	public void initWebDriver(String name, String os){
+	public void initWebDriver(String name){
 		DriverFactory.getDriver(name);
 	}
 	
 	public void initWebDriver(){
+		System.out.println("Driver name: " + driverName);
 		driver = DriverFactory.getDriver(driverName);
 	}
 	

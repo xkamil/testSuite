@@ -6,6 +6,12 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.safari.SafariDriver;
+
+import io.selendroid.client.SelendroidDriver;
+import io.selendroid.common.SelendroidCapabilities;
+import io.selendroid.standalone.SelendroidConfiguration;
+import io.selendroid.standalone.SelendroidLauncher;
+
 import static utils.DriverConstants.*;
 
 
@@ -31,11 +37,36 @@ public final class DriverFactory {
 			}			
 			case DRIVER_HTMLUNIT : {
 				return new HtmlUnitDriver();
-			}			
+			}	
+			case DRIVER_ANDROID : {
+				SelendroidConfiguration config = new SelendroidConfiguration();
+				SelendroidLauncher selendroidServer = new SelendroidLauncher(config);
+				selendroidServer.launchSelendroid();
+				try {
+					return new SelendroidDriver(SelendroidCapabilities.android());
+				} catch (Exception e) {
+					e.printStackTrace();
+				} 
+				return null;
+			}
 			default : {
 				return new FirefoxDriver();
 			}
 		}
+	}
+	
+	
+	//TODO fix this method help: http://selendroid.io/quickStart.html
+	private static WebDriver getAndroidDriverForDeployedApp(String name, String deployedApp){		
+		SelendroidConfiguration config = new SelendroidConfiguration();
+		SelendroidLauncher selendroidServer = new SelendroidLauncher(config);
+		selendroidServer.launchSelendroid();
+		try {
+			return new SelendroidDriver(SelendroidCapabilities.android());
+		} catch (Exception e) {
+			e.printStackTrace();
+		} 
+		return null;		
 	}
 	
 	private static String getOsSpecificFileExtension(){
