@@ -62,7 +62,7 @@ public final class DriverFactory {
 		SelendroidLauncher selendroidServer = new SelendroidLauncher(config);
 		selendroidServer.launchSelendroid();
 		try {
-			return new SelendroidDriver(SelendroidCapabilities.android());
+			return new SelendroidDriver(SelendroidCapabilities.empty());
 		} catch (Exception e) {
 			e.printStackTrace();
 		} 

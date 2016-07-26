@@ -7,6 +7,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.interactions.Actions;
 import org.testng.annotations.*;
 
+import io.selendroid.client.SelendroidDriver;
 import utils.DataProviderGenerator;
 import utils.Screenshot;
 
@@ -25,8 +26,6 @@ public class SampleTest extends AbstractTest{
 	@Test
 	public void test_opening_google_site(){
 		driver.get("http://www.google.pl");
-		Actions actions = new Actions(driver);
-		actions.click().moveByOffset(0, 200).build().perform();
 		Screenshot.getInstance().takeScreenshot(driver, "test_opening_google_site3");
 	}
 	
@@ -43,7 +42,9 @@ public class SampleTest extends AbstractTest{
 	
 	@AfterMethod
 	public void tearDownClass(){
-		driver.close();
+		if(!(driver instanceof SelendroidDriver)){
+			driver.close();
+		}	
 	}
 	
 	
