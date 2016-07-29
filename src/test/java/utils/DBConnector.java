@@ -16,6 +16,10 @@ import org.sql2o.Sql2o;
 * Connection con = DBConnector.getInstance()
 * 	.setUpConnection("jdbc:mysql://localhost:3306/phonebook", "root", "")
 * 	.connect();	  
+* DBConnector conector = DBConnector.getInstance();
+* conector.setUpConnection("jdbc:mysql://localhost:3306/phonebook", "root", "");
+* Connection con = DBConnector.getInstance().connect();	  
+>>>>>>> d1921177c90ec676e9973faaa81b9ee126dbd9e6
 * 
 * <b>//Preaparing query</b>
 * String sql = "SELECT * FROM users ORDER BY id ASC";
