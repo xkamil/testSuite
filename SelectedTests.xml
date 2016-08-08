@@ -3,7 +3,7 @@
 
 <suite name="AllTests" verbose="0">
 	<parameter name="driver" value="chrome" />
-	<parameter name="baseUrl" value="http://optidata.kiss1.pl/login" />
+	<parameter name="baseUrl" value="http://a1.kiss1.pl" />
 	<test name="test_all">
 		<classes>
 			<class name="tests.SampleTest">

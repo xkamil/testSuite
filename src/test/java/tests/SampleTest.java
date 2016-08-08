@@ -7,6 +7,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.interactions.Actions;
 import org.testng.annotations.*;
 
+import pages.SamplePage;
 import utils.DataProviderGenerator;
 import utils.Screenshot;
 
@@ -22,23 +23,16 @@ public class SampleTest extends AbstractTest{
 		driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
 	}
 	
-	@Test
-	public void test_opening_google_site(){
-		driver.get("http://www.google.pl");
-		Actions actions = new Actions(driver);
-		actions.click().moveByOffset(0, 200).build().perform();
-		Screenshot.getInstance().takeScreenshot(driver, "test_opening_google_site3");
-	}
 	
 	@Test
-	public void test_opening_onet_site(){
-		driver.get("http://www.onet.pl");
-		Screenshot.getInstance().takeScreenshot(driver, "test_opening_onet_site3");
-	}	
-	
-	@Test(dataProvider = "valid_users", enabled = false)
-	public void test_printing_users(String username, String password){
-		System.out.println(username + " | " + password);
+	public void test_implicit_wait(){
+		driver.get(baseUrl);
+		new SamplePage(driver)
+			.login("admin", "admin")
+			.openAddEventForm()
+			.selectEventCategory("Spotkanie")
+			.selectEventProject("Daty raty");
+		
 	}
 	
 	@AfterMethod

@@ -10,11 +10,13 @@ import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
 import utils.DriverFactory;
+import utils.ExtendedWebDriver;
 import utils.Screenshot;
+import utils.SuperWebDriver;
 
 public class AbstractTest {
 	protected static final Logger LOGGER = Logger.getLogger(AbstractTest.class.getName());
-	protected static WebDriver driver;
+	protected static ExtendedWebDriver driver;
 	protected static String baseUrl;
 	protected static String driverName;
 		
@@ -34,7 +36,7 @@ public class AbstractTest {
 	
 	public void initWebDriver(){
 		System.out.println("Driver name: " + driverName);
-		driver = DriverFactory.getDriver(driverName);
+		driver = new SuperWebDriver(DriverFactory.getDriver(driverName));
 	}
 	
 	public WebElement findElementBy(final By webElement, int explicitTimeInSeconds){

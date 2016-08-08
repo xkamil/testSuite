@@ -6,6 +6,7 @@ import java.util.concurrent.TimeUnit;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedCondition;
@@ -14,87 +15,12 @@ import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-public abstract class AbstractPage {
-	protected WebDriver driver;
+import utils.ExtendedWebDriver;
 
-	public AbstractPage(WebDriver driver) {
+public abstract class AbstractPage {
+	protected ExtendedWebDriver driver;
+
+	public AbstractPage(ExtendedWebDriver driver) {
 		this.driver = driver;
 	}
-
-	public boolean areElementsPresent(By... elements) {
-		for (By element : elements) {
-			try {
-				driver.findElement(element);
-			} catch (NoSuchElementException ex) {
-				return false;
-			}
-		}
-		return true;
-	}
-
-	public void loadAllResultsOnPage() {
-		By flashListContainer = By.cssSelector("kiss-flash-list");
-		By flashListElement = By.cssSelector("*[element^='collection[']");
-		WebElement flashContainer = driver.findElement(flashListContainer);
-		List<WebElement> elements = new ArrayList<>();
-		int count = 0;
-		boolean allDataLoaded = false;
-		do {
-			elements = flashContainer.findElements(flashListElement);
-			count = elements.size();
-			Actions actions = new Actions(driver);
-			actions.moveToElement(elements.get(count - 1)).build().perform();
-			try {
-				driver.findElement(By.cssSelector("*[element='collection[" + (count + 1) + "]']"));
-			} catch (Exception ex) {
-				allDataLoaded = true;
-			}
-		} while (allDataLoaded == false);
-	}
-
-	/**
-	 * For debugging only!
-	 * 
-	 * @param seconds
-	 *            - time in seconds to
-	 */
-	public void wait(int seconds) {
-		int time = seconds * 1000;
-		try {
-			Thread.sleep(time);
-		} catch (InterruptedException ex) {
-		}
-	}
-
-	public WebElement getElement(final By locator, int timeout) {
-		WebElement element = (new WebDriverWait(driver, timeout).until(new ExpectedCondition<WebElement>(){
-			@Override
-			public WebElement apply(WebDriver arg0) {
-				return driver.findElement(locator);
-			}}));
-		return element;
-	}
-	
-	public WebElement getElementBeforeTimeout(final By locator, int timeout){
-		WebElement element = (new FluentWait<WebDriver>(driver)
-				.withTimeout(timeout, TimeUnit.SECONDS)
-				.pollingEvery(100, TimeUnit.MILLISECONDS)
-				.ignoring(NoSuchElementException.class)
-				.until(new ExpectedCondition<WebElement>(){
-					@Override
-					public WebElement apply(WebDriver driver) {
-						return driver.findElement(locator);
-					}}));
-		return element;
-	}
-	
-	public WebElement getElementIfClicableBeforeTimeout(final By locator, int timeout){
-		WebElement element = (new FluentWait<WebDriver>(driver)
-				.withTimeout(timeout, TimeUnit.SECONDS)
-				.pollingEvery(100, TimeUnit.MILLISECONDS)
-				.ignoring(NoSuchElementException.class)
-				.until(ExpectedConditions.elementToBeClickable(locator)));
-		return element;
-	}
-
 }
